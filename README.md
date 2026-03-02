@@ -31,9 +31,10 @@ repositories {
 
 apply(plugin = "aspectj")
 
-// Optionally
+// Optionally set the AspectJ version
 project.extra["aspectjVersion"] = "1.8.12"
-// Or
+// Or configure via the aspectj extension (requires applying the plugin first)
+// Note: AspectJExtension is provided by the aspectj plugin
 configure<AspectJExtension> {
     version = "1.8.12"
 }
@@ -53,6 +54,8 @@ By default, `xlint: ignore` is used. Specify a different value for the `xlint` v
 `compileTestAspect` task to show AspectJ warnings:
 
 ```kotlin
+// Note: compileAspect task is dynamically added by the aspectj plugin
+// Using setProperty() to access dynamic properties
 tasks.named<Task>("compileAspect") {
     setProperty("xlint", "warning")
 }
@@ -62,6 +65,7 @@ It is possible to specify a different value for the `maxmem` variable of the `co
 `compileTestAspect` task to increase or decrease the max heap size:
 
 ```kotlin
+// Note: compileAspect task is dynamically added by the aspectj plugin
 tasks.named<Task>("compileAspect") {
     setProperty("maxmem", "1024m")
 }
@@ -70,6 +74,7 @@ tasks.named<Task>("compileAspect") {
 To specify additional [ajc arguments](http://www.eclipse.org/aspectj/doc/released/devguide/antTasks-iajc.html#antTasks-iajc-options), you can use ```additionalAjcArgs```. If ```xlint``` or ```maxmem``` are also specified in ```additionalAjcArgs```, the values in ```additionalAjcArgs``` will take precedence. For example, to preserve debug symbols,
 
 ```kotlin
+// Note: Using setProperty() to access dynamically added properties from the aspectj plugin
 tasks.named<Task>("compileAspect") {
     setProperty("additionalAjcArgs", mapOf("debug" to "", "X" to "noInline", "preserveAllLocals" to ""))
 }
