@@ -26,10 +26,12 @@ publishing {
     repositories {
         maven {
             url = uri("https://maven.eveoh.nl/content/repositories/releases")
-            if (project.hasProperty("mavenUser")) {
+            val mavenUser = providers.gradleProperty("mavenUser").orNull
+            val mavenPass = providers.gradleProperty("mavenPass").orNull
+            if (!mavenUser.isNullOrBlank() && !mavenPass.isNullOrBlank()) {
                 credentials {
-                    username = project.property("mavenUser") as String
-                    password = project.property("mavenPass") as String
+                    username = mavenUser
+                    password = mavenPass
                 }
             }
         }
